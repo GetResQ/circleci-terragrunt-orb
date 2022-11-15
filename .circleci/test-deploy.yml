@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  <orb-name>: <namespace>/<orb-name>@dev:<<pipeline.git.revision>>
+  <orb-name>: getresq/terragrunt@dev:<<pipeline.git.revision>>
   orb-tools: circleci/orb-tools@11.1
 
 filters: &filters
@@ -10,29 +10,30 @@ filters: &filters
 jobs:
   # Create a job to test the commands of your orbs.
   # You may want to add additional validation steps to ensure the commands are working as expected.
-  command-tests:
-    docker:
-      - image: cimg/base:current
+  validate-command-sequence:
+    executor: terragrunt/default
     steps:
       - checkout
-      # Run your orb's commands to validate them.
-      - <orb-name>/greet
+      - terragrunt/plan-all:
+          path: "src/infra"
+      - terragrunt/apply-all:
+          path: "src/infra"
 workflows:
   test-deploy:
     jobs:
       # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
-      - command-tests:
+      - validate-command-sequence:
           filters: *filters
       - orb-tools/pack:
           filters: *filters
       - orb-tools/publish:
-          orb-name: <namespace>/<orb-name>
+          orb-name: getresq/terragrunt
           vcs-type: << pipeline.project.type >>
           pub-type: production
           requires:
             - orb-tools/pack
-            - command-tests
-          context: <publishing-context>
+            - validate-command-sequence
+          context: orb-publishing
           filters:
             branches:
               ignore: /.*/
