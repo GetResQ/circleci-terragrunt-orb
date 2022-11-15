@@ -23,6 +23,16 @@ parameters:
     default: ""
     description: Comma-separated list of Terragrunt directories to exclude
     type: string
+  terragrunt-include-dir:
+    default: ""
+    description: Comma-separated list of Terragrunt directories to include
+    type: string
+  terragrunt-strict-include:
+    default: false
+    description: |
+      "When true, only modules under the directories passed in with –terragrunt-include-dir will be included
+      If no –terragrunt-include-dir flags are included, terragrunt will not include any modules during the execution of the commands."
+    type: boolean
   checkout:
     default: false
     description: Perform checkout as first step in job.
@@ -98,6 +108,8 @@ steps:
       backend_config_file: << parameters.backend_config_file >>
       cli_config_file: << parameters.cli_config_file >>
       terragrunt-exclude-dir: << parameters.terragrunt-exclude-dir >>
+      terragrunt-include-dir: << parameters.terragrunt-include-dir >>
+      terragrunt-strict-include: << parameters.terragrunt-strict-include >>
       lock-timeout: <<parameters.lock-timeout>>
       path: << parameters.path >>
       plan: <<parameters.plan>>

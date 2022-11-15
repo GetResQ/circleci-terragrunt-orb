@@ -58,9 +58,17 @@ if [[ -n "${TF_PARAM_LOCK_TIMEOUT}" ]]; then
 fi
 export PLAN_ARGS
 
+if [[ -n "${TG_PARAM_STRICT_INCLUDE}" ]]; then
+  TG_ARGS="$TG_ARGS --terragrunt-strict-include"
+fi
 if [[ -n "${TG_PARAM_EXCLUDE_DIR}" ]]; then
   for edir in $(echo "${TG_PARAM_EXCLUDE_DIR}" | tr ',' '\n'); do
      TG_ARGS="$TG_ARGS --terragrunt-exclude-dir $edir"
+  done
+fi
+if [[ -n "${TG_PARAM_INCLUDE_DIR}" ]]; then
+  for idir in $(echo "${TG_PARAM_INCLUDE_DIR}" | tr ',' '\n'); do
+     TG_ARGS="$TG_ARGS --terragrunt-include-dir $idir"
   done
 fi
 export TG_ARGS

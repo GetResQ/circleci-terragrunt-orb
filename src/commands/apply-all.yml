@@ -18,6 +18,14 @@ parameters:
     default: ""
     description: Comma-separated list of Terragrunt directories to exclude
     type: string
+  terragrunt-include-dir:
+    default: ""
+    description: Comma-separated list of Terragrunt directories to include
+    type: string
+  terragrunt-strict-include:
+    default: ""
+    description: Comma-separated list of Terragrunt directories to exclude
+    type: boolean
   lock-timeout:
     default: 30s
     description: Configure a custom state lock timeout
@@ -54,6 +62,8 @@ steps:
         TF_PARAM_BACKEND_CONFIG_FILE: <<parameters.backend_config_file>>
         TF_PARAM_CLI_CONFIG_FILE: <<parameters.cli_config_file>>
         TG_PARAM_EXCLUDE_DIR: << parameters.terragrunt-exclude-dir >>
+        TG_PARAM_INCLUDE_DIR: << parameters.terragrunt-include-dir >>
+        TG_PARAM_STRICT_INCLUDE: << parameters.terragrunt-strict-include >>
         TF_PARAM_LOCK_TIMEOUT: << parameters.lock-timeout >>
         TF_PARAM_PATH: <<parameters.path>>
         TF_PARAM_PLAN: <<parameters.plan>>
