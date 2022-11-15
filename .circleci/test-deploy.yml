@@ -10,7 +10,7 @@ filters: &filters
 jobs:
   # Create a job to test the commands of your orbs.
   # You may want to add additional validation steps to ensure the commands are working as expected.
-  validate-command-sequence:
+  validate-command-sequence-run-all:
     executor: terragrunt/default
     steps:
       - checkout
@@ -18,11 +18,21 @@ jobs:
           path: "src/infra"
       - terragrunt/apply-all:
           path: "src/infra"
+  validate-command-sequence-individual:
+    executor: terragrunt/default
+    steps:
+      - checkout
+      - terragrunt/plan:
+          path: "src/infra/environments/testing"
+      - terragrunt/apply:
+          path: "src/infra/environments/testing"
 workflows:
   test-deploy:
     jobs:
       # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
-      - validate-command-sequence:
+      - validate-command-sequence-run-all:
+          filters: *filters
+      - validate-command-sequence-individual:
           filters: *filters
       - orb-tools/pack:
           filters: *filters
@@ -32,7 +42,8 @@ workflows:
           pub-type: production
           requires:
             - orb-tools/pack
-            - validate-command-sequence
+            - validate-command-sequence-run-all
+            - validate-command-sequence-individual
           context: orb-publishing
           filters:
             branches:

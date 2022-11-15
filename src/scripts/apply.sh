@@ -11,6 +11,7 @@ fi
 # 'path' is a required parameter, save it as module_path
 readonly module_path="${TF_PARAM_PATH}"
 export path=$module_path
+
 if [[ ! -d "$module_path" ]]; then
   echo "Path does not exist: $module_path"
   exit 1
@@ -32,20 +33,10 @@ if [[ -n "${TF_PARAM_BACKEND_CONFIG}" ]]; then
   done
 fi
 export INIT_ARGS
-
 workspace_parameter="$(eval echo "${TF_PARAM_WORKSPACE}")"
 readonly workspace="${TF_WORKSPACE:-$workspace_parameter}"
 export workspace
 unset TF_WORKSPACE
-
-# Test for saving state locally vs a remote state backend storage
-if [[ -n "$workspace_parameter" ]]; then
-  echo "[INFO] Provisioning local workspace: $workspace"
-  terraform -chdir="$module_path" workspace select "$workspace" || terraform -chdir="$module_path" workspace new "$workspace"
-else
-  echo "[INFO] Remote State Backend Enabled"
-fi
-
 if [[ -n "${TF_PARAM_VAR}" ]]; then
   for var in $(echo "${TF_PARAM_VAR}" | tr ',' '\n'); do
     PLAN_ARGS="$PLAN_ARGS -var $(eval echo "$var")"
@@ -67,12 +58,12 @@ if [[ -n "${TF_PARAM_LOCK_TIMEOUT}" ]]; then
 fi
 export PLAN_ARGS
 
-if [[ -n "${TG_PARAM_EXCLUDE_DIR}" ]]; then
-  for edir in $(echo "${TG_PARAM_EXCLUDE_DIR}" | tr ',' '\n'); do
-     TG_ARGS="$TG_ARGS --terragrunt-exclude-dir $edir"
-  done
+# Test for saving state locally vs a remote state backend storage
+if [[ -n "$workspace_parameter" ]]; then
+  echo "[INFO] Provisioning local workspace: $workspace"
+  terraform -chdir="$module_path" workspace select "$workspace" || terraform -chdir="$module_path" workspace new "$workspace"
+else
+  echo "[INFO] Remote State Backend Enabled"
 fi
-export TG_ARGS
-
 # shellcheck disable=SC2086
-terragrunt run-all plan --terragrunt-working-dir "$module_path" $TG_ARGS -input=false -out=${TF_PARAM_OUT} $PLAN_ARGS
+terragrunt apply --terragrunt-working-dir "$module_path" --terragrunt-non-interactive $PLAN_ARGS ${TF_PARAM_PLAN}

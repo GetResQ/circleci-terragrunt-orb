@@ -14,6 +14,10 @@ parameters:
     default: ""
     description: Path to terraform cli config file
     type: string
+  terragrunt-exclude-dir:
+    default: ""
+    description: Comma-separated list of Terragrunt directories to exclude
+    type: string
   lock-timeout:
     default: 30s
     description: Configure a custom state lock timeout
@@ -49,6 +53,7 @@ steps:
         TF_PARAM_BACKEND_CONFIG: <<parameters.backend_config>>
         TF_PARAM_BACKEND_CONFIG_FILE: <<parameters.backend_config_file>>
         TF_PARAM_CLI_CONFIG_FILE: <<parameters.cli_config_file>>
+        TG_PARAM_EXCLUDE_DIR: << parameters.terragrunt-exclude-dir >>
         TF_PARAM_LOCK_TIMEOUT: << parameters.lock-timeout >>
         TF_PARAM_PATH: <<parameters.path>>
         TF_PARAM_PLAN: <<parameters.plan>>

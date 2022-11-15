@@ -1,5 +1,5 @@
 description: |
-  Run Terragrunt plan against current state
+  Run Terragrunt run-all plan against current state
 executor:
   name: default
   resource_class: << parameters.resource_class >>
@@ -26,6 +26,10 @@ parameters:
   cli_config_file:
     default: ""
     description: Path to terraform cli config file
+    type: string
+  terragrunt-exclude-dir:
+    default: ""
+    description: Comma-separated list of Terragrunt directories to exclude
     type: string
   lock-timeout:
     default: 30s
@@ -93,6 +97,7 @@ steps:
       backend_config: << parameters.backend_config >>
       backend_config_file: << parameters.backend_config_file >>
       cli_config_file: << parameters.cli_config_file >>
+      terragrunt-exclude-dir: << parameters.terragrunt-exclude-dir >>
       lock-timeout: <<parameters.lock-timeout>>
       out: << parameters.out >>
       path: << parameters.path >>

@@ -1,5 +1,5 @@
 description: |
-  Execute Terragrunt run-all apply
+  Run Terragrunt plan against current state
 executor:
   name: default
   resource_class: << parameters.resource_class >>
@@ -8,7 +8,7 @@ executor:
 parameters:
   attach-workspace:
     default: false
-    description: Attach (CircleCI) workspace to job.
+    description: Do cool stuff with workspaces
     type: boolean
   backend_config:
     default: ""
@@ -19,12 +19,8 @@ parameters:
     default: ""
     description: Path to a backend config file
     type: string
-  terragrunt-exclude-dir:
-    default: ""
-    description: Comma-separated list of Terragrunt directories to exclude
-    type: string
   checkout:
-    default: false
+    default: true
     description: Perform checkout as first step in job.
     type: boolean
   cli_config_file:
@@ -35,18 +31,18 @@ parameters:
     default: 30s
     description: Configure a custom state lock timeout
     type: string
+  out:
+    default: plan.out
+    description: The file path to save your terraform plan to.
+    type: string
   path:
     default: .
     description: Path to the terraform module
     type: string
   persist-workspace:
     default: false
-    description: Boolean parameter to indicate whether or not to attach to an existing workspace.
+    description: Persist files to (cci) workspace for use in subsequent jobs
     type: boolean
-  plan:
-    default: ""
-    description: Optionally provide a plan file to supply to the 'apply' command.
-    type: string
   resource_class:
     default: medium
     description: Specify the resource class for Docker Executor
@@ -77,7 +73,7 @@ parameters:
     type: string
   workspace-path:
     default: .
-    description: "Path of the workspace to persist to relative to workspace-root. "
+    description: Path of the workspace to persist to relative to workspace-root.
     type: string
   workspace-root:
     default: .
@@ -93,14 +89,13 @@ steps:
       steps:
         - attach_workspace:
             at: << parameters.workspace-root >>
-  - apply-all:
+  - plan:
       backend_config: << parameters.backend_config >>
       backend_config_file: << parameters.backend_config_file >>
       cli_config_file: << parameters.cli_config_file >>
-      terragrunt-exclude-dir: << parameters.terragrunt-exclude-dir >>
       lock-timeout: <<parameters.lock-timeout>>
+      out: << parameters.out >>
       path: << parameters.path >>
-      plan: <<parameters.plan>>
       timeout: <<parameters.timeout>>
       var: << parameters.var >>
       var_file: << parameters.var_file >>

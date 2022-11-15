@@ -1,5 +1,5 @@
 description: |
-  Execute 'terragrunt run-all plan' against current state.
+  Execute 'terragrunt apply' to apply desired configuration changes to state.
 parameters:
   backend_config:
     default: ""
@@ -14,21 +14,17 @@ parameters:
     default: ""
     description: Path to terraform cli config file
     type: string
-  terragrunt-exclude-dir:
-    default: ""
-    description: Comma-separated list of Terragrunt directories to exclude
-    type: string
   lock-timeout:
     default: 30s
     description: Configure a custom state lock timeout
     type: string
-  out:
-    default: plan.out
-    description: The file path to save your terraform plan to.
-    type: string
   path:
     default: .
     description: Path to the terraform module
+    type: string
+  plan:
+    default: ""
+    description: Optionally provide a plan file to supply to the 'apply' command.
     type: string
   timeout:
     default: 10m
@@ -48,17 +44,16 @@ parameters:
     type: string
 steps:
   - run:
-      command: <<include(scripts/plan-all.sh)>>
+      command: <<include(scripts/apply.sh)>>
       environment:
         TF_PARAM_BACKEND_CONFIG: <<parameters.backend_config>>
         TF_PARAM_BACKEND_CONFIG_FILE: <<parameters.backend_config_file>>
         TF_PARAM_CLI_CONFIG_FILE: <<parameters.cli_config_file>>
-        TG_PARAM_EXCLUDE_DIR: << parameters.terragrunt-exclude-dir >>
         TF_PARAM_LOCK_TIMEOUT: << parameters.lock-timeout >>
-        TF_PARAM_OUT: << parameters.out >>
         TF_PARAM_PATH: <<parameters.path>>
+        TF_PARAM_PLAN: <<parameters.plan>>
         TF_PARAM_VAR: <<parameters.var>>
         TF_PARAM_VAR_FILE: <<parameters.var_file>>
         TF_PARAM_WORKSPACE: <<parameters.workspace>>
-      name: terragrunt run-all plan
+      name: terragrunt apply
       no_output_timeout: <<parameters.timeout>>

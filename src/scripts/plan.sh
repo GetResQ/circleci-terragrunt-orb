@@ -66,13 +66,5 @@ if [[ -n "${TF_PARAM_LOCK_TIMEOUT}" ]]; then
   PLAN_ARGS="$PLAN_ARGS -lock-timeout=${TF_PARAM_LOCK_TIMEOUT}"
 fi
 export PLAN_ARGS
-
-if [[ -n "${TG_PARAM_EXCLUDE_DIR}" ]]; then
-  for edir in $(echo "${TG_PARAM_EXCLUDE_DIR}" | tr ',' '\n'); do
-     TG_ARGS="$TG_ARGS --terragrunt-exclude-dir $edir"
-  done
-fi
-export TG_ARGS
-
 # shellcheck disable=SC2086
-terragrunt run-all plan --terragrunt-working-dir "$module_path" $TG_ARGS -input=false -out=${TF_PARAM_OUT} $PLAN_ARGS
+terragrunt plan --terragrunt-working-dir "$module_path" -input=false -out=${TF_PARAM_OUT} $PLAN_ARGS

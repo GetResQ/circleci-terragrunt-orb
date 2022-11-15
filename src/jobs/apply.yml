@@ -1,5 +1,5 @@
 description: |
-  Execute Terragrunt run-all apply
+  Execute Terragrunt apply
 executor:
   name: default
   resource_class: << parameters.resource_class >>
@@ -18,10 +18,6 @@ parameters:
   backend_config_file:
     default: ""
     description: Path to a backend config file
-    type: string
-  terragrunt-exclude-dir:
-    default: ""
-    description: Comma-separated list of Terragrunt directories to exclude
     type: string
   checkout:
     default: false
@@ -93,11 +89,10 @@ steps:
       steps:
         - attach_workspace:
             at: << parameters.workspace-root >>
-  - apply-all:
+  - apply:
       backend_config: << parameters.backend_config >>
       backend_config_file: << parameters.backend_config_file >>
       cli_config_file: << parameters.cli_config_file >>
-      terragrunt-exclude-dir: << parameters.terragrunt-exclude-dir >>
       lock-timeout: <<parameters.lock-timeout>>
       path: << parameters.path >>
       plan: <<parameters.plan>>
