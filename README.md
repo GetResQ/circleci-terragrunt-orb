@@ -1,3 +1,5 @@
+Loosely based on https://circleci.com/developer/orbs/orb/circleci/terraform#orb-source
+
 # Orb Template
 
 <!---

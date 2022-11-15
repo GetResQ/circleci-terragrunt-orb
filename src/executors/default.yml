@@ -1,12 +1,22 @@
 description: >
-  This is a sample executor using Docker and Node. If you want to provide a custom environment in your orb, insert your image here.
-  If you do not require an executor, you can simply delete this directory.
+  A docker-based Terragrunt and Terraform executor using the https://github.com/devops-infra/docker-terragrunt image
 docker:
-  - image: 'cimg/node:<<parameters.tag>>'
+  - image: 'ghcr.io/devops-infra/docker-terragrunt/docker-terragrunt:aws-tf-<<parameters.tf-version>>-tg-<<parameters.tg-version>>'
 parameters:
-  tag:
-    default: lts
-    description: >
-      Pick a specific cimg/node image variant:
-      https://hub.docker.com/r/cimg/node/tags
+  resource_class:
+    default: medium
+    description: Specify the resource class for Docker Executor
     type: string
+  tf-version:
+    default: 1.1.9
+    description: >
+      Specify the Terraform version to use
+      https://hub.docker.com/r/devopsinfra/docker-terragrunt/tags
+    type: string
+  tg-version:
+    default: 0.37.1
+    description: >
+      Specify the Terragrunt version to use
+      https://hub.docker.com/r/devopsinfra/docker-terragrunt/tags
+    type: string
+resource_class: << parameters.resource_class >>
