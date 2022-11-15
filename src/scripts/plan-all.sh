@@ -83,4 +83,5 @@ fi
 export TG_ARGS
 
 # shellcheck disable=SC2086
+echo "--terragrunt-working-dir $module_path $TG_ARGS -input=false -out=${TF_PARAM_OUT} $PLAN_ARGS"
 terragrunt run-all plan --terragrunt-working-dir "$module_path" $TG_ARGS -input=false -out=${TF_PARAM_OUT} $PLAN_ARGS
