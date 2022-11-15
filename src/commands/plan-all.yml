@@ -1,5 +1,5 @@
 description: |
-  Execute 'terraform plan' against current state.
+  Execute 'terragrunt run-all plan' against current state.
 parameters:
   backend_config:
     default: ""
@@ -55,5 +55,5 @@ steps:
         TF_PARAM_VAR: <<parameters.var>>
         TF_PARAM_VAR_FILE: <<parameters.var_file>>
         TF_PARAM_WORKSPACE: <<parameters.workspace>>
-      name: terraform plan
+      name: terragrunt run-all plan
       no_output_timeout: <<parameters.timeout>>

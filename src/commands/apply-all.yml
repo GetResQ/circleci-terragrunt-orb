@@ -1,5 +1,5 @@
 description: |
-  Execute 'terraform apply' to apply desired configuration changes to state.
+  Execute 'terragrunt run-all apply' to apply desired configuration changes to state.
 parameters:
   backend_config:
     default: ""
@@ -55,5 +55,5 @@ steps:
         TF_PARAM_VAR: <<parameters.var>>
         TF_PARAM_VAR_FILE: <<parameters.var_file>>
         TF_PARAM_WORKSPACE: <<parameters.workspace>>
-      name: terraform apply
+      name: terragrunt run-all apply
       no_output_timeout: <<parameters.timeout>>
