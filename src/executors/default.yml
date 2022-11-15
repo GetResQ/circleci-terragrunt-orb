@@ -1,7 +1,7 @@
 description: >
   A docker-based Terragrunt and Terraform executor using the https://github.com/devops-infra/docker-terragrunt image
 docker:
-  - image: 'ghcr.io/devops-infra/docker-terragrunt/docker-terragrunt:aws-tf-<<parameters.tf-version>>-tg-<<parameters.tg-version>>'
+  - image: 'devopsinfra/docker-terragrunt:aws-tf-<<parameters.tf-version>>-tg-<<parameters.tg-version>>'
 parameters:
   resource_class:
     default: medium
