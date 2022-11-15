@@ -1,110 +1,109 @@
-apply:
-  description: |
-    Execute Terragrunt plan
-  executor:
-    name: default
-    resource_class: << parameters.resource_class >>
-    tf-version: << parameters.tf-version >>
-    tg-version: << parameters.tf-version >>
-  parameters:
-    attach-workspace:
-      default: false
-      description: Attach (CircleCI) workspace to job.
-      type: boolean
-    backend_config:
-      default: ""
-      description: |
-        "Comma separated list of backend configs to set, e.g. 'foo=bar'"
-      type: string
-    backend_config_file:
-      default: ""
-      description: Path to a backend config file
-      type: string
-    checkout:
-      default: false
-      description: Perform checkout as first step in job.
-      type: boolean
-    cli_config_file:
-      default: ""
-      description: Path to terraform cli config file
-      type: string
-    lock-timeout:
-      default: 30s
-      description: Configure a custom state lock timeout
-      type: string
-    path:
-      default: .
-      description: Path to the terraform module
-      type: string
-    persist-workspace:
-      default: false
-      description: Boolean parameter to indicate whether or not to attach to an existing workspace.
-      type: boolean
-    plan:
-      default: ""
-      description: Optionally provide a plan file to supply to the 'apply' command.
-      type: string
-    resource_class:
-      default: medium
-      description: Specify the resource class for Docker Executor
-      type: string
-    tf-version:
-      default: 1.1.9
-      description: Specify the Terraform version to use for the executor
-      type: string
-    tg-version:
-      default: 0.37.1
-      description: Specify the Terrgrunt version to use for the executor
-      type: string
-    timeout:
-      default: 10m
-      description: Configure a custom timeout limit
-      type: string
-    var:
-      default: ""
-      description: Comma separated list of vars to set, e.g. 'foo=bar,bas=foo'
-      type: string
-    var_file:
-      default: ""
-      description: Comma separated list of var file paths
-      type: string
-    workspace:
-      default: ""
-      description: Name of the terraform workspace
-      type: string
-    workspace-path:
-      default: .
-      description: "Path of the workspace to persist to relative to workspace-root. "
-      type: string
-    workspace-root:
-      default: .
-      description: Workspace root path that is either an absolute path or a path relative to the working directory. Defaults to '.' (the working directory)
-      type: string
-  steps:
-    - when:
-        condition: << parameters.checkout >>
-        steps:
-          - checkout
-    - when:
-        condition: << parameters.attach-workspace >>
-        steps:
-          - attach_workspace:
-              at: << parameters.workspace-root >>
-    - apply-all:
-        backend_config: << parameters.backend_config >>
-        backend_config_file: << parameters.backend_config_file >>
-        cli_config_file: << parameters.cli_config_file >>
-        lock-timeout: <<parameters.lock-timeout>>
-        path: << parameters.path >>
-        plan: <<parameters.plan>>
-        timeout: <<parameters.timeout>>
-        var: << parameters.var >>
-        var_file: << parameters.var_file >>
-        workspace: << parameters.workspace >>
-    - when:
-        condition: << parameters.persist-workspace >>
-        steps:
-          - persist_to_workspace:
-              paths:
-                - << parameters.workspace-path >>
-              root: << parameters.workspace-root >>
+description: |
+  Execute Terragrunt plan
+executor:
+  name: default
+  resource_class: << parameters.resource_class >>
+  tf-version: << parameters.tf-version >>
+  tg-version: << parameters.tf-version >>
+parameters:
+  attach-workspace:
+    default: false
+    description: Attach (CircleCI) workspace to job.
+    type: boolean
+  backend_config:
+    default: ""
+    description: |
+      "Comma separated list of backend configs to set, e.g. 'foo=bar'"
+    type: string
+  backend_config_file:
+    default: ""
+    description: Path to a backend config file
+    type: string
+  checkout:
+    default: false
+    description: Perform checkout as first step in job.
+    type: boolean
+  cli_config_file:
+    default: ""
+    description: Path to terraform cli config file
+    type: string
+  lock-timeout:
+    default: 30s
+    description: Configure a custom state lock timeout
+    type: string
+  path:
+    default: .
+    description: Path to the terraform module
+    type: string
+  persist-workspace:
+    default: false
+    description: Boolean parameter to indicate whether or not to attach to an existing workspace.
+    type: boolean
+  plan:
+    default: ""
+    description: Optionally provide a plan file to supply to the 'apply' command.
+    type: string
+  resource_class:
+    default: medium
+    description: Specify the resource class for Docker Executor
+    type: string
+  tf-version:
+    default: 1.1.9
+    description: Specify the Terraform version to use for the executor
+    type: string
+  tg-version:
+    default: 0.37.1
+    description: Specify the Terrgrunt version to use for the executor
+    type: string
+  timeout:
+    default: 10m
+    description: Configure a custom timeout limit
+    type: string
+  var:
+    default: ""
+    description: Comma separated list of vars to set, e.g. 'foo=bar,bas=foo'
+    type: string
+  var_file:
+    default: ""
+    description: Comma separated list of var file paths
+    type: string
+  workspace:
+    default: ""
+    description: Name of the terraform workspace
+    type: string
+  workspace-path:
+    default: .
+    description: "Path of the workspace to persist to relative to workspace-root. "
+    type: string
+  workspace-root:
+    default: .
+    description: Workspace root path that is either an absolute path or a path relative to the working directory. Defaults to '.' (the working directory)
+    type: string
+steps:
+  - when:
+      condition: << parameters.checkout >>
+      steps:
+        - checkout
+  - when:
+      condition: << parameters.attach-workspace >>
+      steps:
+        - attach_workspace:
+            at: << parameters.workspace-root >>
+  - apply-all:
+      backend_config: << parameters.backend_config >>
+      backend_config_file: << parameters.backend_config_file >>
+      cli_config_file: << parameters.cli_config_file >>
+      lock-timeout: <<parameters.lock-timeout>>
+      path: << parameters.path >>
+      plan: <<parameters.plan>>
+      timeout: <<parameters.timeout>>
+      var: << parameters.var >>
+      var_file: << parameters.var_file >>
+      workspace: << parameters.workspace >>
+  - when:
+      condition: << parameters.persist-workspace >>
+      steps:
+        - persist_to_workspace:
+            paths:
+              - << parameters.workspace-path >>
+            root: << parameters.workspace-root >>
