@@ -1,4 +1,4 @@
-Loosely based on https://circleci.com/developer/orbs/orb/circleci/terraform#orb-source
+Based on https://circleci.com/developer/orbs/orb/circleci/terraform#orb-source
 
 # Orb Template
 
