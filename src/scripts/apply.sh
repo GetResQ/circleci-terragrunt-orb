@@ -66,4 +66,4 @@ else
   echo "[INFO] Remote State Backend Enabled"
 fi
 # shellcheck disable=SC2086
-terragrunt apply --terragrunt-working-dir "$module_path" --terragrunt-non-interactive $PLAN_ARGS ${TF_PARAM_PLAN}
+terragrunt apply --terragrunt-working-dir "$module_path" --terragrunt-non-interactive -auto-approve $PLAN_ARGS ${TF_PARAM_PLAN}
