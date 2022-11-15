@@ -23,7 +23,7 @@ parameters:
     description: Comma-separated list of Terragrunt directories to include
     type: string
   terragrunt-strict-include:
-    default: ""
+    default: false
     description: Comma-separated list of Terragrunt directories to exclude
     type: boolean
   lock-timeout:
