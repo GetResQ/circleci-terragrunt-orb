@@ -58,7 +58,7 @@ if [[ -n "${TF_PARAM_LOCK_TIMEOUT}" ]]; then
 fi
 export PLAN_ARGS
 
-if [[ -n "${TG_PARAM_STRICT_INCLUDE}" ]]; then
+if $TG_PARAM_STRICT_INCLUDE; then
   TG_ARGS="$TG_ARGS --terragrunt-strict-include"
 fi
 if [[ -n "${TG_PARAM_EXCLUDE_DIR}" ]]; then
@@ -81,6 +81,6 @@ else
   echo "[INFO] Remote State Backend Enabled"
 fi
 
-echo "--terragrunt-working-dir $module_path $TG_ARGS --terragrunt-non-interactive $PLAN_ARGS ${TF_PARAM_PLAN}"
+echo "args: --terragrunt-working-dir $module_path $TG_ARGS --terragrunt-non-interactive $PLAN_ARGS ${TF_PARAM_PLAN}"
 # shellcheck disable=SC2086
 terragrunt run-all apply --terragrunt-working-dir "$module_path" $TG_ARGS --terragrunt-non-interactive $PLAN_ARGS ${TF_PARAM_PLAN}

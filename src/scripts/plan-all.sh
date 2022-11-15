@@ -67,7 +67,7 @@ if [[ -n "${TF_PARAM_LOCK_TIMEOUT}" ]]; then
 fi
 export PLAN_ARGS
 
-if [[ -n "${TG_PARAM_STRICT_INCLUDE}" ]]; then
+if $TG_PARAM_STRICT_INCLUDE; then
   TG_ARGS="$TG_ARGS --terragrunt-strict-include"
 fi
 if [[ -n "${TG_PARAM_EXCLUDE_DIR}" ]]; then
@@ -83,6 +83,6 @@ fi
 export TG_ARGS
 
 
-echo "--terragrunt-working-dir $module_path $TG_ARGS -input=false -out=${TF_PARAM_OUT} $PLAN_ARGS"
+echo "args: --terragrunt-working-dir $module_path $TG_ARGS -input=false -out=${TF_PARAM_OUT} $PLAN_ARGS"
 # shellcheck disable=SC2086
 terragrunt run-all plan --terragrunt-working-dir "$module_path" $TG_ARGS -input=false -out=${TF_PARAM_OUT} $PLAN_ARGS
