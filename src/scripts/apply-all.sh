@@ -80,6 +80,7 @@ if [[ -n "$workspace_parameter" ]]; then
 else
   echo "[INFO] Remote State Backend Enabled"
 fi
-# shellcheck disable=SC2086
+
 echo "--terragrunt-working-dir $module_path $TG_ARGS --terragrunt-non-interactive $PLAN_ARGS ${TF_PARAM_PLAN}"
+# shellcheck disable=SC2086
 terragrunt run-all apply --terragrunt-working-dir "$module_path" $TG_ARGS --terragrunt-non-interactive $PLAN_ARGS ${TF_PARAM_PLAN}
