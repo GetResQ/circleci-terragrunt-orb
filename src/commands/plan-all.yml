@@ -28,6 +28,10 @@ parameters:
       "When true, only modules under the directories passed in with –terragrunt-include-dir will be included
       If no –terragrunt-include-dir flags are included, terragrunt will not include any modules during the execution of the commands."
     type: boolean
+  terragrunt-include-module-prefix:
+    default: false
+    description: When this flag is set output from Terraform sub-commands is prefixed with module path.
+    type: boolean
   lock-timeout:
     default: 30s
     description: Configure a custom state lock timeout
@@ -66,6 +70,7 @@ steps:
         TG_PARAM_EXCLUDE_DIR: << parameters.terragrunt-exclude-dir >>
         TG_PARAM_INCLUDE_DIR: << parameters.terragrunt-include-dir >>
         TG_PARAM_STRICT_INCLUDE: << parameters.terragrunt-strict-include >>
+        TG_INCLUDE_MODULE_PREFIX: << parameters.terragrunt-include-module-prefix >>
         TF_PARAM_LOCK_TIMEOUT: << parameters.lock-timeout >>
         TF_PARAM_OUT: << parameters.out >>
         TF_PARAM_PATH: <<parameters.path>>

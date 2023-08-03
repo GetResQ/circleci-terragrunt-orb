@@ -70,6 +70,9 @@ export PLAN_ARGS
 if $TG_PARAM_STRICT_INCLUDE; then
   TG_ARGS="$TG_ARGS --terragrunt-strict-include"
 fi
+if $TG_INCLUDE_MODULE_PREFIX; then
+  TG_ARGS="$TG_ARGS --terragrunt-include-module-prefix"
+fi
 if [[ -n "${TG_PARAM_EXCLUDE_DIR}" ]]; then
   for edir in $(echo "${TG_PARAM_EXCLUDE_DIR}" | tr ',' '\n'); do
      TG_ARGS="$TG_ARGS --terragrunt-exclude-dir $edir"

@@ -33,6 +33,10 @@ parameters:
       "When true, only modules under the directories passed in with –terragrunt-include-dir will be included
       If no –terragrunt-include-dir flags are included, terragrunt will not include any modules during the execution of the commands."
     type: boolean
+  terragrunt-include-module-prefix:
+    default: false
+    description: When this flag is set output from Terraform sub-commands is prefixed with module path.
+    type: boolean
   checkout:
     default: false
     description: Perform checkout as first step in job.
@@ -110,6 +114,7 @@ steps:
       terragrunt-exclude-dir: << parameters.terragrunt-exclude-dir >>
       terragrunt-include-dir: << parameters.terragrunt-include-dir >>
       terragrunt-strict-include: << parameters.terragrunt-strict-include >>
+      terragrunt-include-module-prefix: << parameters.terragrunt-include-module-prefix >>
       lock-timeout: <<parameters.lock-timeout>>
       path: << parameters.path >>
       plan: <<parameters.plan>>
