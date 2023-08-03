@@ -68,11 +68,11 @@ fi
 export PLAN_ARGS
 
 # shellcheck disable=SC2086
-if [ $TG_PARAM_STRICT_INCLUDE ]; then
+if [ $TG_PARAM_STRICT_INCLUDE -eq 1 ]; then
   TG_ARGS="$TG_ARGS --terragrunt-strict-include"
 fi
 # shellcheck disable=SC2086
-if [ $TG_INCLUDE_MODULE_PREFIX ]; then
+if [ $TG_INCLUDE_MODULE_PREFIX -eq 1 ]; then
   TG_ARGS="$TG_ARGS --terragrunt-include-module-prefix"
 fi
 if [[ -n "${TG_PARAM_EXCLUDE_DIR}" ]]; then
