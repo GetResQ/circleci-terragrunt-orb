@@ -67,12 +67,10 @@ if [[ -n "${TF_PARAM_LOCK_TIMEOUT}" ]]; then
 fi
 export PLAN_ARGS
 
-# shellcheck disable=SC2086
-if [ $TG_PARAM_STRICT_INCLUDE ]; then
+if [ ((TG_PARAM_STRICT_INCLUDE)) ]; then
   TG_ARGS="$TG_ARGS --terragrunt-strict-include"
 fi
-# shellcheck disable=SC2086
-if [ $TG_INCLUDE_MODULE_PREFIX ]; then
+if [ ((TG_INCLUDE_MODULE_PREFIX)) ]; then
   TG_ARGS="$TG_ARGS --terragrunt-include-module-prefix"
 fi
 if [[ -n "${TG_PARAM_EXCLUDE_DIR}" ]]; then
